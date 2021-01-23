@@ -1,3 +1,4 @@
+
 function apiCall(event) {
     let form = document.querySelector("form")
     form.addEventListener("submit", event => {
@@ -12,7 +13,7 @@ function apiCall(event) {
             mode: 'cors',
             headers: new Headers(),
             credentials: 'same-origin'
-        }).then(response => response.json()).then(data => postServer(data));
+        }).then(response => response.json()).then(data => postServer(data)).then(response => update(response))
     })   
 }
 
@@ -29,18 +30,34 @@ const getUrl = (input) => {
 
 const postServer = (data) => {
     console.log("Inside of PostServer:", data)
-    fetch('http://localhost:8080/post', {
-        headers: new Headers({'content-type': 'application/json'}),
+    const data1 = data.sentence_list[0].score_tag
+    const data2 = {"text": data1}
+    console.log("MyJson", typeof data1)
+    fetch('http://localhost:8081/post', {
+        headers: {'Content-Type': 'application/json'},
+        redirect: 'follow',
+        referrerPolicy: 'no-referrer',
+        cache: 'no-cache',
         method: 'POST',
-        body: data,
+        body: JSON.stringify(data2),
         mode: 'cors',
-        credential: 'same-origin'
     })
-        .then((response) => { return response.json()})
-        .then((data) => {
-            console.log("Response from the server!", data)
-        })
+        .then(response => response.json())
+        .then(function(data) {
+            return update(data)})
+        .catch((error) => {
+            console.error('Error:', error);
+          })
 }
+
+const update = (response) => {
+    console.log("Inside of update:", response.text)
+    const text = response.text
+    const wrapper = document.getElementById('results')
+    wrapper.innerText = text
+}
+
+
 
 /*const updateUI = (data) => {
     let results = document.getElementById('results')
