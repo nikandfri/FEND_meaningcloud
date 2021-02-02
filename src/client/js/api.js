@@ -54,7 +54,7 @@ const update = (response) => {
     console.log("Inside of update:", response.text)
     const text = response.text
     const wrapper = document.getElementById('results')
-    wrapper.innerText = text
+    wrapper.textContent = text
 }
 
 
@@ -65,3 +65,5 @@ const update = (response) => {
 }*/
 
 export{ apiCall }
+export { getUrl }
+export { update }
