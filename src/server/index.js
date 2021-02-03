@@ -1,12 +1,10 @@
-const dotenv = require('dotenv');
-dotenv.config();
-console.log(process.env.NUMBER)
 var path = require('path')
 const express = require('express')
 const mockAPIResponse = require('./mockAPI.js')
 const cors = require('cors')
 const app = express()
 const bodyParser = require('body-parser')
+
 
 app.use(cors())
 

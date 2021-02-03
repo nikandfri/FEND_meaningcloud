@@ -2,6 +2,7 @@ const path = require('path')
 const webpack = require('webpack')
 const HtmlWebPackPlugin = require("html-webpack-plugin")
 const WorkboxPlugin = require('workbox-webpack-plugin');
+const Dotenv = require('dotenv-webpack');
 
 
 module.exports = {
@@ -35,6 +36,16 @@ module.exports = {
             // and not allow any straggling "old" SWs to hang around
             clientsClaim: true,
             skipWaiting: true,
+          }),
+          new Dotenv({
+           // path: path.resolve(__dirname, '/.env'), // Path to .env file (this is the default)
+           path: './.env',
+           safe: false, // load .env.example (defaults to "false" which does not use dotenv-safe)
+           systemvars: true,
+           allowEmptyValues: true,
+           silent: true,
+           expand: true,
+           defaults: true
           })
     ],
     output: {

@@ -1,5 +1,6 @@
 
 function apiCall(event) {
+    console.log(process.env.DB_HOST);
     let form = document.querySelector("form")
     form.addEventListener("submit", event => {
         const input = form.elements.input.value
@@ -20,7 +21,7 @@ function apiCall(event) {
 const getUrl = (input) => {
     console.log("Inside of getURL", input)
     const model = "&model=general&lang=en"
-    const apiKey = "4c86f19313711cbb6fc8c26d9c8eaf53&of=json&txt="
+    const apiKey = process.env.S3_API
     const baseUrl = "https://api.meaningcloud.com/sentiment-2.1?key="
     const textEncoded = encodeURIComponent(input)
     const url = baseUrl + apiKey + textEncoded + model
