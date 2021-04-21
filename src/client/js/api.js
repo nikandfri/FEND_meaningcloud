@@ -22,6 +22,7 @@ const getUrl = (input) => {
     console.log("Inside of getURL", input)
     const model = "&model=general&lang=en"
     const apiKey = process.env.S3_API
+    console.log("API key consoled:", apiKey)
     const baseUrl = "https://api.meaningcloud.com/sentiment-2.1?key="
     const textEncoded = encodeURIComponent(input)
     const url = baseUrl + apiKey + textEncoded + model

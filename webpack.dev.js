@@ -2,6 +2,8 @@ const path = require('path')
 const webpack = require('webpack')
 const HtmlWebPackPlugin = require("html-webpack-plugin")
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const Dotenv = require('dotenv-webpack');
+
 
 module.exports = {
     entry: './src/client/index.js',
@@ -38,6 +40,16 @@ module.exports = {
             // Automatically remove all unused webpack assets on rebuild
             cleanStaleWebpackAssets: true,
             protectWebpackAssets: false
-        })
+        }),
+        new Dotenv({
+            // path: path.resolve(__dirname, '/.env'), // Path to .env file (this is the default)
+            path: './.env',
+            safe: false, // load .env.example (defaults to "false" which does not use dotenv-safe)
+            systemvars: true,
+            allowEmptyValues: true,
+            silent: true,
+            expand: true,
+            defaults: true
+           })
     ]
 }
