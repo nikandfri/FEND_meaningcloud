@@ -24,7 +24,7 @@ const getUrl = (input) => {
     const apiKey = process.env.S3_API
     console.log("API key consoled:", apiKey)
     const baseUrl = "https://api.meaningcloud.com/sentiment-2.1?key="
-    const textEncoded = encodeURIComponent(input)
+    const textEncoded = input
     const url = baseUrl + apiKey + textEncoded + model
     console.log("returning of url in getURL:", url)
     return url
@@ -32,7 +32,7 @@ const getUrl = (input) => {
 
 const postServer = (data) => {
     console.log("Inside of PostServer:", data)
-    const data1 = data.sentence_list[0].score_tag
+    const data1 = data.score_tag
     const data2 = {"text": data1}
     console.log("MyJson", typeof data1)
     fetch('http://localhost:8081/post', {
@@ -53,10 +53,9 @@ const postServer = (data) => {
 }
 
 const update = (response) => {
-    console.log("Inside of update:", response.text)
-    const text = response.text
+    const texty = response.text
     const wrapper = document.getElementById('results')
-    wrapper.textContent = text
+    wrapper.textContent = texty
 }
 
 
