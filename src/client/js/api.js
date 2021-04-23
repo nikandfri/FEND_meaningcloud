@@ -1,3 +1,4 @@
+import axios from "axios";
 
 function apiCall(event) {
     console.log(process.env.DB_HOST);
@@ -6,17 +7,26 @@ function apiCall(event) {
         const input = form.elements.input.value
         event.preventDefault()
         console.log("input:", input)
-        const url = getUrl(input)
-        console.log("returning url in apiCall function:", url)
-        fetch(url,{
-            method: 'POST',
-            body: 'data',
-            mode: 'cors',
-            headers: new Headers(),
-            credentials: 'same-origin'
-        }).then(response => response.json()).then(data => postServer(data)).then(response => update(response))
+        if (isURL(input) == true) {
+            const url = getUrl(input)
+            const data = [url]
+            console.log("returning url in apiCall function:", url)
+            axios.post('http://localhost:8081/post', data).then(response => update(response))
+        } else {
+            alert("No string bro!")
+        }      
     })   
 }
+
+function isURL(str) {
+    var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
+    '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|'+ // domain name
+    '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
+    '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
+    '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
+    '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
+    return pattern.test(str);
+  }
 
 const getUrl = (input) => {
     console.log("Inside of getURL", input)
@@ -30,32 +40,30 @@ const getUrl = (input) => {
     return url
 }
 
-const postServer = (data) => {
-    console.log("Inside of PostServer:", data)
-    const data1 = data.score_tag
-    const data2 = {"text": data1}
-    console.log("MyJson", typeof data1)
-    fetch('http://localhost:8081/post', {
-        headers: {'Content-Type': 'application/json'},
-        redirect: 'follow',
-        referrerPolicy: 'no-referrer',
-        cache: 'no-cache',
-        method: 'POST',
-        body: JSON.stringify(data2),
-        mode: 'cors',
-    })
-        .then(response => response.json())
-        .then(function(data) {
-            return update(data)})
-        .catch((error) => {
-            console.error('Error:', error);
-          })
-}
+
 
 const update = (response) => {
-    const texty = response.text
-    const wrapper = document.getElementById('results')
-    wrapper.textContent = texty
+    console.log("Inside of Update", response.data)
+    const textSubjectivity = response.data[1]
+    const textAgreement = response.data[0]
+    const textConfidence = response.data[2]
+    const textIrony = response.data[3]
+    const textScoreTag = response.data[4]
+
+
+    const subjectivity = document.getElementById('results1')
+    const agreement = document.getElementById('results2')
+    const confidence = document.getElementById('results3')
+    const irony = document.getElementById('results4')
+    const scoreTag = document.getElementById('results5')
+
+    subjectivity.textContent = textSubjectivity
+    agreement.textContent = textAgreement
+    confidence.textContent = textConfidence
+    irony.textContent = textIrony
+    scoreTag.textContent = textScoreTag
+
+
 }
 
 
