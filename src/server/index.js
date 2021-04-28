@@ -6,23 +6,23 @@ const app = express()
 const bodyParser = require('body-parser')
 const axios = require('axios')
 const { response } = require('express')
-const url = 'https://api.meaningcloud.com/sentiment-2.1?key=4c86f19313711cbb6fc8c26d9c8eaf53&of=json&url=https://www.bild.de/politik/kolumnen/kolumne/kommentar-zum-infektionsschutzgesetz-ein-geschenk-fuer-extremisten-76148478.bild.html&model=general&lang=en'
+const root = path.join(__dirname + '../../../build')
 const data = []
 
 app.use(cors())
 
 app.use(bodyParser.json())
 
-app.use(express.static('../../build'))
+app.use(express.static(root))
 
 app.use(express.json())
 
 
-console.log(__dirname)
+console.log("Root directory is: ", root)
 
-/*app.get('/', function (req, res) {
+app.get('/', function (req, res) {
     res.sendFile(path.join(__dirname, '../../build', 'index.html'));
-})*/
+})
 
 app.post('/post', (req, res)=> {
     const body = req.body
@@ -48,14 +48,12 @@ app.post('/post', (req, res)=> {
 })
 
 // designates what port the app will listen to for incoming requests
-app.listen(8081, function () {
-    console.log('Example app listening on port 8081!')
+app.listen(8083, function () {
+    console.log('Example app listening on port 8083!')
 })
 
 
-app.get('/test', function (req, res) {
-    res.send("This is my Get page")
-    })
+
     
       
     //axios.post(url).then(response => data.push(response.data.score_tag, response.data.agreement, response.data.subjectivity, response.data.confidence, response.data.irony)).then(data => res.write(data))
